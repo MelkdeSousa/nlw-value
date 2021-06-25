@@ -1,5 +1,6 @@
-import { User } from 'src/models/User'
-import { customUserRepository } from 'src/repositories/UserRepository'
+import { getCustomRepository } from 'typeorm'
+import { User } from '../../models/User'
+import UserRepository from '../../repositories/UserRepository'
 
 interface IUserRequest {
   name: string
@@ -13,9 +14,8 @@ interface ICreateUserService {
 
 class CreateUserService implements ICreateUserService {
   async execute({ name, email, admin }: IUserRequest) {
-    const userRepository = customUserRepository
-
     if (!email) throw new Error('Email required')
+    const userRepository = getCustomRepository(UserRepository)
 
     const userAlreadyExists = await userRepository.findOne({ email })
 

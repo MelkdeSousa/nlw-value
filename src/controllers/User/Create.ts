@@ -1,6 +1,6 @@
 import { Request as ExpressRequest, Response as ExpressResponse } from 'express'
 
-import CreateUserService from 'src/services/User/Create'
+import CreateUserService from '../../services/User/Create'
 
 interface ICreateUserController {
   handle(
