@@ -25,7 +25,8 @@ class CreateComplimentService implements ICreateComplimentService {
     const complimentRepository = getCustomRepository(ComplimentRepository)
     const userRepository = getCustomRepository(UserRepository)
 
-    if (user_sender === user_receiver) throw new Error('Incorrect user receiver')
+    if (user_sender === user_receiver)
+      throw new Error('Incorrect user receiver')
 
     const userReceiverExists = await userRepository.findOne(user_receiver)
 

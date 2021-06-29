@@ -11,7 +11,8 @@ interface ICreateComplimentController {
 
 class CreateComplimentController implements ICreateComplimentController {
   async handle(request: ExpressRequest, response: ExpressResponse) {
-    const { tag_id, user_sender, user_receiver, message } = request.body
+    const { tag_id, user_receiver, message } = request.body
+    const { userId: user_sender } = request
 
     const createComplimentService = new CreateComplimentService()
 

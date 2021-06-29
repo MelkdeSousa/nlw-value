@@ -4,6 +4,7 @@ import { hash } from 'bcryptjs'
 import UserRepository from '../../repositories/UserRepository'
 
 import { SALT_HASH } from '../../env'
+import AuthenticateUserService from './Authenticate'
 
 interface IUserRequest {
   name: string
@@ -28,6 +29,7 @@ class CreateUserService implements ICreateUserService {
   async execute({ name, email, password, admin = false }: IUserRequest) {
     if (!email) throw new Error('Email required')
     const userRepository = getCustomRepository(UserRepository)
+    const authenticatedUserService = new AuthenticateUserService()
 
     const userAlreadyExists = await userRepository.findOne({ email })
 
@@ -39,17 +41,19 @@ class CreateUserService implements ICreateUserService {
       name,
       email,
       password: passwordHash,
-      admin,
+      admin
     })
 
     await userRepository.save(user)
 
-    return {
-      id: user.id,
-      name: user.name,
-      admin: user.admin,
+    const token = await authenticatedUserService.execute({
       email: user.email,
-      created_at: user.created_at
+      password: user.password
+    })
+
+    return {
+      token,
+      ...user
     }
   }
 }

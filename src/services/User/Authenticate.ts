@@ -27,12 +27,16 @@ class AuthenticateUserService {
       throw new Error('Email/Password invalid')
     }
 
-    const token = sign({
-      email: user.email,
-    }, JWT_KEY, {
-      subject: user.id,
-      expiresIn: '20m'
-    })
+    const token = sign(
+      {
+        email: user.email
+      },
+      JWT_KEY,
+      {
+        subject: user.id,
+        expiresIn: '5m'
+      }
+    )
 
     return token
   }

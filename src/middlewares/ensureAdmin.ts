@@ -1,19 +1,27 @@
 import {
   Request as ExpressRequest,
   Response as ExpressResponse,
-  NextFunction,
+  NextFunction
 } from 'express'
+import { getCustomRepository } from 'typeorm'
 
-export default (
+import UserRepository from '../repositories/UserRepository'
+
+export default async (
   request: ExpressRequest,
   response: ExpressResponse,
   next: NextFunction
 ) => {
-  const admin = true
+  const { userId } = request
 
-  if (admin) {
-    return next()
-  }
+  const userRepository = getCustomRepository(UserRepository)
 
-  return response.status(401)
+  const user = await userRepository.findOne(userId)
+
+  if (!user || !user.admin)
+    return response
+      .status(401)
+      .json({ message: 'User is not an administrator' })
+
+  return next()
 }

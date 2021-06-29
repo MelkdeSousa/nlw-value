@@ -3,7 +3,7 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   CreateDateColumn,
-  UpdateDateColumn,
+  UpdateDateColumn
 } from 'typeorm'
 
 import { v4 as uuid } from 'uuid'
@@ -19,7 +19,7 @@ export class User {
   @Column()
   email: string
 
-  @Column()
+  @Column({ select: false })
   password: string
 
   @Column()
